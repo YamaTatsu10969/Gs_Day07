@@ -20,52 +20,78 @@ class TaskCollection {
     private init(){}
     
     //外部からは参照のみ許可 // ここに全ての情報が持っている！！！
-    private(set) var tasks: [Task] = []
+    private var tasks: [Task] = []
     
     // ここにUserDefaults で使うキーを置いておく。打ち間違いを減らすように。
     // UserDefaults に使うキー
     let userDefaultsTasksKey = "user_tasks"
     
+    private let taskUseCase = TaskUseCase()
+    
     //弱参照して循環参照を防ぐ
     weak var delegate: TaskCollectionDelegate? = nil
     
+    func createTask() -> Task {
+        let id = taskUseCase.createTaskId()
+        let task = Task()
+        task.id = id
+        return task
+    }
+    
+    func getTask (at: Int) -> Task{
+        return tasks[at]
+    }
+    
+    func taskCount () -> Int{
+        return tasks.count
+    }
+    
     func addTask(_ task: Task) {
+        taskUseCase.addTask(task)
         tasks.append(task)
         save()
     }
     
     func editTask(task: Task, index: Int) {
+        taskUseCase.editTask(task)
         tasks[index] = task
         save()
     }
     
     func removeTask(index: Int) {
+        taskUseCase.removeTask(taskId: tasks[index].id)
         tasks.remove(at: index)
         save()
     }
     
     func save() {
         // UserDefaults の保存の処理
-        let encoder = JSONEncoder()
-        do {
-            let data = try encoder.encode(tasks)
-            UserDefaults.standard.set(data, forKey: userDefaultsTasksKey)
-        } catch {
-            print(error)
-        }
+//        let encoder = JSONEncoder()
+//        do {
+//            let data = try encoder.encode(tasks)
+//            UserDefaults.standard.set(data, forKey: userDefaultsTasksKey)
+//        } catch {
+//            print(error)
+//        }
         delegate?.saved()
     }
     
     func load() {
-        let decoder = JSONDecoder()
-        do {
-            guard let data = UserDefaults.standard.data(forKey: userDefaultsTasksKey) else {
+        taskUseCase.fetchTaskDocuments { (tasks) in
+            guard let tasks = tasks else {
                 return
             }
-            tasks = try decoder.decode([Task].self, from: data)
-        } catch {
-            print(error)
+            self.tasks = tasks
         }
+//        let decoder = JSONDecoder()
+//        do {
+//            guard let data = UserDefaults.standard.data(forKey: userDefaultsTasksKey) else {
+//                return
+//            }
+//            tasks = try decoder.decode([Task].self, from: data)
+//        } catch {
+//            print(error)
+//        }
         delegate?.loaded()
     }
 }

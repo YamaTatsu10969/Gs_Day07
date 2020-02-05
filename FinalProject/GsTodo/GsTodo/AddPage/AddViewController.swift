@@ -8,6 +8,7 @@
 
 import UIKit
 import PKHUD
+import Firebase
 
 class AddViewController: UIViewController {
     
@@ -26,8 +27,8 @@ class AddViewController: UIViewController {
         // Editかどうかの判定
         if let index = selectIndex {
             title = "編集"
-            titleTextField.text = TaskCollection.shared.tasks[index].title
-            memoTextView.text = TaskCollection.shared.tasks[index].memo
+            titleTextField.text = TaskCollection.shared.getTask(at: index).title
+            memoTextView.text = TaskCollection.shared.getTask(at: index).memo
         }
     }
     
@@ -64,11 +65,18 @@ class AddViewController: UIViewController {
         // ここで Edit か Add　かを判定している
         if let index = selectIndex {
             // Edit
-            let editTask = Task(title: title, memo: memoTextView.text)
+            let editTask = TaskCollection.shared.getTask(at: index)
+            editTask.title = title
+            editTask.memo = memoTextView.text
+            editTask.updateAt = Timestamp()
             TaskCollection.shared.editTask(task: editTask, index: index)
         } else {
             // Add
-            let task = Task(title: title, memo: memoTextView.text)
+            let task = TaskCollection.shared.createTask()
+            task.title = title
+            task.memo = memoTextView.text
+            task.createAt = Timestamp()
+            task.updateAt = Timestamp()
             TaskCollection.shared.addTask(task)
         }
         

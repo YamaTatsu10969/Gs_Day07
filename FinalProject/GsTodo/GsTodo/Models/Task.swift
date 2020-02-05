@@ -7,17 +7,19 @@
 //
 
 import Foundation
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 // Task のクラス。
 // プロパティに title と memo を持っている
 class Task: Codable {
-    var title: String
-    var memo: String?
+    var id: String = ""
+    var title: String = ""
+    var memo: String = ""
+    var createAt: Timestamp?
+    var updateAt: Timestamp?
     
     // init とは、Task を作るときに呼ばれるメソッド。(イニシャライザという)
     // 使い方： let task = Task(title: "プログラミング")
-    init(title: String, memo: String = "") {
-        self.title = title
-        self.memo = memo
-    }
+    init() {}
 }

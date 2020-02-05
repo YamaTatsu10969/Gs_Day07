@@ -9,4 +9,7 @@ target 'GsTodo' do
   pod 'PKHUD'
   pod 'Firebase/Auth'
   pod 'Firebase/Core'
+  pod 'Firebase/Firestore'
+  pod 'FirebaseFirestoreSwift'
+  
 end

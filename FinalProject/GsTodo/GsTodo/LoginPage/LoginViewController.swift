@@ -66,7 +66,7 @@ class LoginViewController: UIViewController {
     }
     
     func emailLogIn(email: String, password: String) {
-        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
+        Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
             if let error = error {
 //                print ("👿ログイン失敗")
                 self.logInErrorAlert(error)

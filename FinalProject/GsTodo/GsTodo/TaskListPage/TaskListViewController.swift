@@ -68,13 +68,13 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
     
     /// 1つの Section の中の Row　の数を定義する(セルの数を定義)
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return TaskCollection.shared.tasks.count
+        return TaskCollection.shared.taskCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 登録したセルを使う。 as! CustomCell としないと、UITableViewCell のままでしか使えない。
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomCell
-        cell.titleLabel?.text = TaskCollection.shared.tasks[indexPath.row].title
+        cell.titleLabel?.text = TaskCollection.shared.getTask(at: indexPath.row).title
         return cell
     }
     
