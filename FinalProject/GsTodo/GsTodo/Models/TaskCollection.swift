@@ -65,6 +65,8 @@ class TaskCollection {
     }
     
     func save() {
+        
+
         // UserDefaults の保存の処理
 //        let encoder = JSONEncoder()
 //        do {
@@ -73,6 +75,7 @@ class TaskCollection {
 //        } catch {
 //            print(error)
 //        }
+        tasks = tasks.sorted(by: {$0.updateAt?.dateValue() ?? Date() > $1.updateAt?.dateValue() ?? Date()})
         delegate?.saved()
     }
     
@@ -81,7 +84,9 @@ class TaskCollection {
             guard let tasks = tasks else {
                 return
             }
-            self.tasks = tasks
+            self.tasks = tasks.sorted(by: {$0.updateAt?.dateValue() ?? Date() > $1.updateAt?.dateValue() ?? Date()})
+            
+            self.delegate?.loaded()
         }
 //        let decoder = JSONDecoder()
 //        do {
@@ -92,6 +97,6 @@ class TaskCollection {
 //        } catch {
 //            print(error)
 //        }
-        delegate?.loaded()
+        
     }
 }
