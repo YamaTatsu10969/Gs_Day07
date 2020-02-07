@@ -29,6 +29,9 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
         // delegete に自分を入れて、TaskCollection で行われた変更を知ることができるようにしている。
         TaskCollection.shared.delegate = self
         
+        #warning("ロードする")
+        TaskCollection.shared.load()
+        
         setupNavigationBar()
         // Do any additional setup after loading the view.
     }

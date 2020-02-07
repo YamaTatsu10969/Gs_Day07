@@ -16,22 +16,15 @@ protocol TaskCollectionDelegate: class {
 class TaskCollection {
     //初回アクセスのタイミングでインスタンスを生成
     static var shared = TaskCollection()
-    
-    let taskUseCase: TaskUseCase
-    
     //外部からの初期化を禁止
-    private init(){
-        taskUseCase = TaskUseCase()
-        load()
-    }
-    
-    func createTask() -> Task {
-        let id = taskUseCase.createTaskId()
-        return Task(id: id)
-    }
+    private init(){}
     
     //外部からは参照のみ許可 // ここに全ての情報が持っている！！！
     private var tasks: [Task] = []
+    
+    // ここにUserDefaults で使うキーを置いておく。打ち間違いを減らすように。
+    // UserDefaults に使うキー
+    let userDefaultsTasksKey = "user_tasks"
     
     //弱参照して循環参照を防ぐ
     weak var delegate: TaskCollectionDelegate? = nil
@@ -46,35 +39,41 @@ class TaskCollection {
     
     func addTask(_ task: Task) {
         tasks.append(task)
-        taskUseCase.addTask(task)
         save()
     }
     
     func editTask(task: Task, index: Int) {
         tasks[index] = task
-        taskUseCase.editTask(task)
         save()
     }
     
     func removeTask(index: Int) {
         tasks.remove(at: index)
-        taskUseCase.removeTask(taskId: tasks[index].id)
         save()
     }
     
-    private func save() {
-        tasks = tasks.sorted(by: {$0.updatedAt.dateValue() > $1.updatedAt.dateValue()})
+    func save() {
+        // UserDefaults の保存の処理
+        let encoder = JSONEncoder()
+        do {
+            let data = try encoder.encode(tasks)
+            UserDefaults.standard.set(data, forKey: userDefaultsTasksKey)
+        } catch {
+            print(error)
+        }
         delegate?.saved()
     }
     
-    private func load() {
-        taskUseCase.fetchTaskDocuments { (tasks) in
-            guard let tasks = tasks else {
-                self.save()
+    func load() {
+        let decoder = JSONDecoder()
+        do {
+            guard let data = UserDefaults.standard.data(forKey: userDefaultsTasksKey) else {
                 return
             }
-            self.tasks = tasks.sorted(by: {$0.updatedAt.dateValue() > $1.updatedAt.dateValue()})
-            self.delegate?.loaded()
+            tasks = try decoder.decode([Task].self, from: data)
+        } catch {
+            print(error)
         }
+        delegate?.loaded()
     }
 }

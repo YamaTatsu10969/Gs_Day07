@@ -8,7 +8,6 @@
 
 import UIKit
 import PKHUD
-import FirebaseFirestore
 
 class AddViewController: UIViewController {
     
@@ -65,16 +64,11 @@ class AddViewController: UIViewController {
         // ここで Edit か Add　かを判定している
         if let index = selectIndex {
             // Edit
-            let editTask = TaskCollection.shared.getTask(at: index)
-            editTask.title = title
-            editTask.memo = memoTextView.text
-            editTask.updatedAt = Timestamp()
+            let editTask = Task(title: title, memo: memoTextView.text)
             TaskCollection.shared.editTask(task: editTask, index: index)
         } else {
             // Add
-            let task = TaskCollection.shared.createTask()
-            task.title = title
-            task.memo = memoTextView.text
+            let task = Task(title: title, memo: memoTextView.text)
             TaskCollection.shared.addTask(task)
         }
         
