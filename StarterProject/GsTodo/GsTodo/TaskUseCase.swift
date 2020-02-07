@@ -25,4 +25,17 @@ class TaskUseCase {
         print("taskIdは",id)
         return id
     }
+    
+    func addTask(_ task: Task){
+        let documentRef = self.getCollectionRef().document(task.id)
+        // TODO: 修正する
+        let encodeTask:[String: Any] = [:]
+        documentRef.setData(encodeTask) { (err) in
+            if let _err = err {
+                print("データ追加失敗",_err)
+            } else {
+                print("データ追加成功")
+            }
+        }
+    }
 }
