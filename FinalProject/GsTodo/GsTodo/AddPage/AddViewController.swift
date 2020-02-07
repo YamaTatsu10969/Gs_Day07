@@ -8,7 +8,7 @@
 
 import UIKit
 import PKHUD
-import Firebase
+import FirebaseFirestore
 
 class AddViewController: UIViewController {
     
@@ -75,8 +75,6 @@ class AddViewController: UIViewController {
             let task = TaskCollection.shared.createTask()
             task.title = title
             task.memo = memoTextView.text
-            task.createdAt = Timestamp()
-            task.updatedAt = Timestamp()
             TaskCollection.shared.addTask(task)
         }
         

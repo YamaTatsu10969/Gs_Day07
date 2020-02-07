@@ -16,27 +16,25 @@ protocol TaskCollectionDelegate: class {
 class TaskCollection {
     //初回アクセスのタイミングでインスタンスを生成
     static var shared = TaskCollection()
+    
+    let taskUseCase: TaskUseCase
+    
     //外部からの初期化を禁止
-    private init(){}
+    private init(){
+        taskUseCase = TaskUseCase()
+        load()
+    }
+    
+    func createTask() -> Task {
+        let id = taskUseCase.createTaskId()
+        return Task(id: id)
+    }
     
     //外部からは参照のみ許可 // ここに全ての情報が持っている！！！
     private var tasks: [Task] = []
     
-    // ここにUserDefaults で使うキーを置いておく。打ち間違いを減らすように。
-    // UserDefaults に使うキー
-    let userDefaultsTasksKey = "user_tasks"
-    
-    private let taskUseCase = TaskUseCase()
-    
     //弱参照して循環参照を防ぐ
     weak var delegate: TaskCollectionDelegate? = nil
-    
-    func createTask() -> Task {
-        let id = taskUseCase.createTaskId()
-        let task = Task()
-        task.id = id
-        return task
-    }
     
     func getTask (at: Int) -> Task{
         return tasks[at]
@@ -47,56 +45,36 @@ class TaskCollection {
     }
     
     func addTask(_ task: Task) {
-        taskUseCase.addTask(task)
         tasks.append(task)
+        taskUseCase.addTask(task)
         save()
     }
     
     func editTask(task: Task, index: Int) {
-        taskUseCase.editTask(task)
         tasks[index] = task
+        taskUseCase.editTask(task)
         save()
     }
     
     func removeTask(index: Int) {
-        taskUseCase.removeTask(taskId: tasks[index].id)
         tasks.remove(at: index)
+        taskUseCase.removeTask(taskId: tasks[index].id)
         save()
     }
     
-    func save() {
-        
-
-        // UserDefaults の保存の処理
-//        let encoder = JSONEncoder()
-//        do {
-//            let data = try encoder.encode(tasks)
-//            UserDefaults.standard.set(data, forKey: userDefaultsTasksKey)
-//        } catch {
-//            print(error)
-//        }
-        tasks = tasks.sorted(by: {$0.updatedAt?.dateValue() ?? Date() > $1.updatedAt?.dateValue() ?? Date()})
+    private func save() {
+        tasks = tasks.sorted(by: {$0.updatedAt.dateValue() > $1.updatedAt.dateValue()})
         delegate?.saved()
     }
     
-    func load() {
+    private func load() {
         taskUseCase.fetchTaskDocuments { (tasks) in
             guard let tasks = tasks else {
+                self.save()
                 return
             }
-            self.tasks = tasks.sorted(by: {$0.updatedAt?.dateValue() ?? Date() > $1.updatedAt?.dateValue() ?? Date()})
-            
+            self.tasks = tasks.sorted(by: {$0.updatedAt.dateValue() > $1.updatedAt.dateValue()})
             self.delegate?.loaded()
         }
-//        let decoder = JSONDecoder()
-//        do {
-//            guard let data = UserDefaults.standard.data(forKey: userDefaultsTasksKey) else {
-//                return
-//            }
-//            tasks = try decoder.decode([Task].self, from: data)
-//        } catch {
-//            print(error)
-//        }
-        
     }
 }
