@@ -62,8 +62,8 @@ class TaskCollection {
         save()
     }
     
-    func save() {
-
+    private func save() {
+        tasks = tasks.sorted(by: {$0.updatedAt.dateValue() > $1.updatedAt.dateValue()})
         delegate?.saved()
     }
     
@@ -73,7 +73,7 @@ class TaskCollection {
                 self.save()
                 return
             }
-            self.tasks = tasks
+            self.tasks = tasks.sorted(by: {$0.updatedAt.dateValue() > $1.updatedAt.dateValue()})
             self.delegate?.loaded()
         }
     }
