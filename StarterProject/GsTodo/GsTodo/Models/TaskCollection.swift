@@ -67,8 +67,14 @@ class TaskCollection {
         delegate?.saved()
     }
     
-    func load() {
-
-        delegate?.loaded()
+    private func load() {
+        taskUseCase.fetchTaskDocuments { (tasks) in
+            guard let tasks = tasks else {
+                self.save()
+                return
+            }
+            self.tasks = tasks
+            self.delegate?.loaded()
+        }
     }
 }
