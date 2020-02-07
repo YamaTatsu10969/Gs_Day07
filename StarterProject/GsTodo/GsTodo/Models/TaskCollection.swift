@@ -52,6 +52,7 @@ class TaskCollection {
     
     func editTask(task: Task, index: Int) {
         tasks[index] = task
+        taskUseCase.editTask(task)
         save()
     }
     
