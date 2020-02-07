@@ -20,4 +20,9 @@ class TaskUseCase {
         return self.db.collection("users").document(uid).collection("tasks")
     }
     
+    func createTaskId() -> String {
+        let id = self.getCollectionRef().document().documentID
+        print("taskIdは",id)
+        return id
+    }
 }
