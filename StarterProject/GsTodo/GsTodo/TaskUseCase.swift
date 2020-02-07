@@ -61,4 +61,21 @@ class TaskUseCase {
             }
         }
     }
+    
+    func fetchTaskDocuments(callback: @escaping ([Task]?) -> Void){
+        let collectionRef = getCollectionRef()
+        collectionRef.getDocuments(source: .default) { (snapshot, err) in
+            guard err == nil, let snapshot = snapshot,!snapshot.isEmpty else {
+                print("データ取得失敗",err.debugDescription)
+                callback(nil)
+                return
+            }
+            
+            print("データ取得成功")
+            let tasks = snapshot.documents.compactMap { snapshot in
+                return try? Firestore.Decoder().decode(Task.self, from: snapshot.data())
+            }
+            callback(tasks)
+        }
+    }
 }
