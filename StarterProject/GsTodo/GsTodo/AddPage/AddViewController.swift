@@ -62,13 +62,13 @@ class AddViewController: UIViewController {
         }
         
         // ここで Edit か Add　かを判定している
-        if let index = selectIndex {
+            if let index = selectIndex {
             // Edit
-            let editTask = Task(title: title, memo: memoTextView.text)
+            let editTask = Task(id: "一時的に修正")
             TaskCollection.shared.editTask(task: editTask, index: index)
         } else {
             // Add
-            let task = Task(title: title, memo: memoTextView.text)
+            let task = Task(id: "一時的に修正")
             TaskCollection.shared.addTask(task)
         }
         
