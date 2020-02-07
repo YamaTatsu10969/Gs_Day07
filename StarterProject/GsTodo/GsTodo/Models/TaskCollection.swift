@@ -46,6 +46,7 @@ class TaskCollection {
     
     func addTask(_ task: Task) {
         tasks.append(task)
+        taskUseCase.addTask(task)
         save()
     }
     
