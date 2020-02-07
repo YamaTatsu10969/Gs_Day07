@@ -38,4 +38,16 @@ class TaskUseCase {
             }
         }
     }
+    
+    func editTask(_ task: Task){
+        let documentRef = self.getCollectionRef().document(task.id)
+        let encodeTask = try! Firestore.Encoder().encode(task)
+        documentRef.updateData(encodeTask) { (err) in
+            if let _err = err {
+                print("データ修正失敗",_err)
+            } else {
+                print("データ修正成功")
+            }
+        }
+    }
 }
