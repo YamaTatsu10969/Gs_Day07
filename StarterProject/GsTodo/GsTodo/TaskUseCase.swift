@@ -8,7 +8,16 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseAuth
 
 class TaskUseCase {
     let db = Firestore.firestore()
+    
+    private func getCollectionRef () -> CollectionReference {
+        guard let uid = Auth.auth().currentUser?.uid else {
+            fatalError ("Uidを取得出来ませんでした。") //本番環境では使わない
+        }
+        return self.db.collection("users").document(uid).collection("tasks")
+    }
+    
 }
