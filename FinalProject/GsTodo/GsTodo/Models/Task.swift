@@ -16,8 +16,8 @@ class Task: Codable {
     var id: String = ""
     var title: String = ""
     var memo: String = ""
-    var createAt: Timestamp?
-    var updateAt: Timestamp?
+    var createdAt: Timestamp?
+    var updatedAt: Timestamp?
     
     // init とは、Task を作るときに呼ばれるメソッド。(イニシャライザという)
     // 使い方： let task = Task(title: "プログラミング")

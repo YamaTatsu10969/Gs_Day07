@@ -29,7 +29,7 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
         // delegete に自分を入れて、TaskCollection で行われた変更を知ることができるようにしている。
         TaskCollection.shared.delegate = self
         
-        #warning("ロードする")
+//        #warning("ロードする")
         TaskCollection.shared.load()
         
         setupNavigationBar()
@@ -40,7 +40,7 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
         let rightButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showAddScreen))
         navigationItem.rightBarButtonItem = rightButtonItem
         
-        #warning("leftButton を作成して、 logout を実行する")
+//        #warning("leftButton を作成して、 logout を実行する")
         let leftButtonItem = UIBarButtonItem(title: "logout", style: .plain, target: self, action: #selector(logout))
         navigationItem.leftBarButtonItem = leftButtonItem
     }
@@ -80,7 +80,7 @@ class TaskListViewController: UIViewController, UITableViewDelegate, UITableView
     
     // セルをタップした時の処理
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        #warning("タップした後に色がつくのを消す処理を追加")
+//        #warning("タップした後に色がつくのを消す処理を追加")
         tableView.deselectRow(at: indexPath, animated: true)
         
         let vc = AddViewController()

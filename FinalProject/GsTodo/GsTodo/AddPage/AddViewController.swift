@@ -68,15 +68,15 @@ class AddViewController: UIViewController {
             let editTask = TaskCollection.shared.getTask(at: index)
             editTask.title = title
             editTask.memo = memoTextView.text
-            editTask.updateAt = Timestamp()
+            editTask.updatedAt = Timestamp()
             TaskCollection.shared.editTask(task: editTask, index: index)
         } else {
             // Add
             let task = TaskCollection.shared.createTask()
             task.title = title
             task.memo = memoTextView.text
-            task.createAt = Timestamp()
-            task.updateAt = Timestamp()
+            task.createdAt = Timestamp()
+            task.updatedAt = Timestamp()
             TaskCollection.shared.addTask(task)
         }
         

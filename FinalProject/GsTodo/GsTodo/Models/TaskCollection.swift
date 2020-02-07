@@ -75,7 +75,7 @@ class TaskCollection {
 //        } catch {
 //            print(error)
 //        }
-        tasks = tasks.sorted(by: {$0.updateAt?.dateValue() ?? Date() > $1.updateAt?.dateValue() ?? Date()})
+        tasks = tasks.sorted(by: {$0.updatedAt?.dateValue() ?? Date() > $1.updatedAt?.dateValue() ?? Date()})
         delegate?.saved()
     }
     
@@ -84,7 +84,7 @@ class TaskCollection {
             guard let tasks = tasks else {
                 return
             }
-            self.tasks = tasks.sorted(by: {$0.updateAt?.dateValue() ?? Date() > $1.updateAt?.dateValue() ?? Date()})
+            self.tasks = tasks.sorted(by: {$0.updatedAt?.dateValue() ?? Date() > $1.updatedAt?.dateValue() ?? Date()})
             
             self.delegate?.loaded()
         }
