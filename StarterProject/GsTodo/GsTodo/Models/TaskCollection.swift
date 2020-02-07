@@ -16,8 +16,19 @@ protocol TaskCollectionDelegate: class {
 class TaskCollection {
     //初回アクセスのタイミングでインスタンスを生成
     static var shared = TaskCollection()
+    
+    let taskUseCase: TaskUseCase
+    
     //外部からの初期化を禁止
-    private init(){}
+    private init(){
+        taskUseCase = TaskUseCase()
+        load()
+    }
+    
+    func createTask() -> Task {
+        let id = taskUseCase.createTaskId()
+        return Task(id: id)
+    }
     
     //外部からは参照のみ許可 // ここに全ての情報が持っている！！！
     private var tasks: [Task] = []
