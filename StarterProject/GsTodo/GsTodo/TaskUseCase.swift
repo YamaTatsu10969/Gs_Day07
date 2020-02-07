@@ -28,7 +28,7 @@ class TaskUseCase {
     }
     
     func addTask(_ task: Task){
-        let documentRef = self.getCollectionRef().document(task.id)
+        let documentRef = getCollectionRef().document(task.id)
         let encodeTask = try! Firestore.Encoder().encode(task)
         documentRef.setData(encodeTask) { (err) in
             if let _err = err {
@@ -40,7 +40,7 @@ class TaskUseCase {
     }
     
     func editTask(_ task: Task){
-        let documentRef = self.getCollectionRef().document(task.id)
+        let documentRef = getCollectionRef().document(task.id)
         let encodeTask = try! Firestore.Encoder().encode(task)
         documentRef.updateData(encodeTask) { (err) in
             if let _err = err {
@@ -52,7 +52,7 @@ class TaskUseCase {
     }
     
     func removeTask(taskId: String){
-        let documentRef = self.getCollectionRef().document(taskId)
+        let documentRef = getCollectionRef().document(taskId)
         documentRef.delete { (err) in
             if let _err = err {
                 print("データ取得",_err)
