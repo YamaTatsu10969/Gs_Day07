@@ -50,4 +50,15 @@ class TaskUseCase {
             }
         }
     }
+    
+    func removeTask(taskId: String){
+        let documentRef = self.getCollectionRef().document(taskId)
+        documentRef.delete { (err) in
+            if let _err = err {
+                print("データ取得",_err)
+            } else {
+                print("データ削除成功")
+            }
+        }
+    }
 }
