@@ -58,6 +58,7 @@ class TaskCollection {
     
     func removeTask(index: Int) {
         tasks.remove(at: index)
+        taskUseCase.removeTask(taskId: tasks[index].id)
         save()
     }
     
