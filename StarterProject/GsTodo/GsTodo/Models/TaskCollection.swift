@@ -20,7 +20,7 @@ class TaskCollection {
     private init(){}
     
     //外部からは参照のみ許可 // ここに全ての情報が持っている！！！
-    private(set) var tasks: [Task] = []
+    private var tasks: [Task] = []
     
     // ここにUserDefaults で使うキーを置いておく。打ち間違いを減らすように。
     // UserDefaults に使うキー
@@ -28,6 +28,14 @@ class TaskCollection {
     
     //弱参照して循環参照を防ぐ
     weak var delegate: TaskCollectionDelegate? = nil
+    
+    func getTask (at: Int) -> Task{
+        return tasks[at]
+    }
+    
+    func taskCount () -> Int{
+        return tasks.count
+    }
     
     func addTask(_ task: Task) {
         tasks.append(task)

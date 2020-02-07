@@ -26,8 +26,8 @@ class AddViewController: UIViewController {
         // Editかどうかの判定
         if let index = selectIndex {
             title = "編集"
-            titleTextField.text = TaskCollection.shared.tasks[index].title
-            memoTextView.text = TaskCollection.shared.tasks[index].memo
+            titleTextField.text = TaskCollection.shared.getTask(at: index).title
+            memoTextView.text = TaskCollection.shared.getTask(at: index).memo
         }
     }
     
